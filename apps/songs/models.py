@@ -10,11 +10,11 @@ class Singers(models.Model):
     """
     sexs = (
         ('male', '男'),
-        ('female', '女'),
+        ('female', '女')
     )
     singer_name = models.CharField(verbose_name='歌手名', max_length=30)
     sex = models.CharField(verbose_name='性别', max_length=6, choices=sexs, default='male')
-    birthday = models.DateTimeField(verbose_name="添加时间", null=True)
+    birthday = models.DateTimeField(verbose_name="生日", null=True)
     desc = models.TextField(verbose_name='歌手介绍', max_length=500, null=True)
     search_num = models.IntegerField(verbose_name='搜索量', default=0)
     add_time = models.DateTimeField(verbose_name="添加时间", default=datetime.now)
@@ -36,7 +36,6 @@ class Album(models.Model):
     album_name = models.CharField(verbose_name='专辑名', max_length=30)
     singer = models.ForeignKey(Singers, verbose_name='歌手', on_delete=models.CASCADE)
     desc = models.TextField(verbose_name='专辑介绍', max_length=500, null=True)
-    image = models.ImageField(verbose_name='专辑图片', upload_to='images/', null=True)
     play_num = models.IntegerField(verbose_name='播放量', default=0)
     add_time = models.DateTimeField(verbose_name="添加时间", default=datetime.now)
 
@@ -54,10 +53,10 @@ class Music(models.Model):
     歌曲信息
     """
     songname = models.CharField(verbose_name='歌曲名', max_length=100, unique=True)
-    songurl = models.FilePathField(verbose_name='歌曲文件地址', path='music/')
+    songurl = models.FileField(verbose_name='歌曲文件地址', upload_to='music/upload/', max_length=500)
     singer = models.ForeignKey(Singers, verbose_name='歌手', on_delete=models.CASCADE)
     album = models.ForeignKey(Album, verbose_name='专辑', on_delete=models.CASCADE)
-    lyric = models.FilePathField(verbose_name='歌词文件地址', path='lyric/', null=True)
+    lyric = models.FileField(verbose_name='歌词文件地址', upload_to='lyric/upload/', null=True, max_length=500)
     type = models.CharField(verbose_name='歌曲类型', max_length=30)
     search_num = models.IntegerField(verbose_name='搜索量', default=0)
     download_num = models.IntegerField(verbose_name='下载量', default=0)
