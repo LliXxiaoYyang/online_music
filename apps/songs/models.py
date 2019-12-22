@@ -17,7 +17,6 @@ class Singers(models.Model):
     birthday = models.DateTimeField(verbose_name="添加时间", null=True)
     desc = models.TextField(verbose_name='歌手介绍', max_length=500, null=True)
     search_num = models.IntegerField(verbose_name='搜索量', default=0)
-    image = models.ImageField(verbose_name='歌手图片', upload_to='images/', null=True)
     add_time = models.DateTimeField(verbose_name="添加时间", default=datetime.now)
 
     class Meta:
@@ -58,6 +57,7 @@ class Music(models.Model):
     songurl = models.FilePathField(verbose_name='歌曲文件地址', path='music/')
     singer = models.ForeignKey(Singers, verbose_name='歌手', on_delete=models.CASCADE)
     album = models.ForeignKey(Album, verbose_name='专辑', on_delete=models.CASCADE)
+    lyric = models.FilePathField(verbose_name='歌词文件地址', path='lyric/', null=True)
     type = models.CharField(verbose_name='歌曲类型', max_length=30)
     search_num = models.IntegerField(verbose_name='搜索量', default=0)
     download_num = models.IntegerField(verbose_name='下载量', default=0)
@@ -75,19 +75,33 @@ class Music(models.Model):
         return self.songname
 
 
-class Lyric(models.Model):
+class SingerImage(models.Model):
     """
-    歌词信息
+    歌手图片
     """
-    song = models.ForeignKey(Music, verbose_name='歌曲', on_delete=models.CASCADE)
-    lyric_url = models.FilePathField(verbose_name='歌词文件地址', path='music/')
+    singer_id = models.ForeignKey(Singers,verbose_name='歌手ID', on_delete=models.CASCADE)
+    image = models.ImageField(verbose_name='歌手图片', upload_to='images/')
 
     class Meta:
-        db_table = 'Lyric'
-        verbose_name = '歌词信息'
+        db_table = "SingerImage"
+        verbose_name = '歌手图片'
         verbose_name_plural = verbose_name
 
     def __str__(self):
-        return self.song.songname
+        return self.singer_id.singer_name
 
 
+class AlbumImage(models.Model):
+    """
+    专辑图片
+    """
+    album_id = models.ForeignKey(Album,verbose_name='专辑ID', on_delete=models.CASCADE)
+    image = models.ImageField(verbose_name='专辑图片', upload_to='images/')
+
+    class Meta:
+        db_table = 'AlbumImage'
+        verbose_name = '专辑图片'
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.album_id.album_name

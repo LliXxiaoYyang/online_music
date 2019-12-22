@@ -76,7 +76,7 @@ class UserComment(models.Model):
 
     class Meta:
         db_table = 'UserComment'
-        verbose_name = '用户播放列表'
+        verbose_name = '用户评论'
         verbose_name_plural = verbose_name
 
     def __str__(self):
